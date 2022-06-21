@@ -28,7 +28,7 @@ export default defineComponent({
   },
   emits: ["iniciar"],
   methods: {
-    click() {
+    click(): void {
       this.$emit("iniciar");
     }
   }
