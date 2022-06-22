@@ -1,5 +1,5 @@
 <template>
-  <div class="box has-text-weight-bold">
+  <div class="box has-text-weight-bold" :style="estilos">
     <slot></slot>
   </div>
 </template>
@@ -9,11 +9,14 @@
 
   export default defineComponent({
     name: "BoxPrincipal",
+    data() {
+      return {
+        estilos: {
+          background: "#faf0ca",
+        },
+      };
+    },
   });
 </script>
 
-<style scoped>
-  .box {
-    background: #faf0ca;
-  }
-</style>
+<style></style>
