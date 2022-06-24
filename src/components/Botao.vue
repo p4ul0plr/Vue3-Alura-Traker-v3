@@ -8,33 +8,31 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+  import { defineComponent } from "vue";
 
-export default defineComponent({
-  name: "BotaoPrincipal",
-  props: {
-    disabled: {
-      type: Boolean,
-      required: true
+  export default defineComponent({
+    name: "BotaoPrincipal",
+    props: {
+      disabled: {
+        type: Boolean,
+        required: true,
+      },
+      label: {
+        type: String,
+        required: true,
+      },
+      icon: {
+        type: String,
+        defalt: "none",
+      },
     },
-    label: {
-      type: String,
-      required: true
+    emits: ["iniciar"],
+    methods: {
+      click(): void {
+        this.$emit("iniciar");
+      },
     },
-    icon: {
-      type: String,
-      defalt: "none"
-    }
-  },
-  emits: ["iniciar"],
-  methods: {
-    click(): void {
-      this.$emit("iniciar");
-    }
-  }
-})
+  });
 </script>
 
-<style>
-
-</style>
+<style></style>
