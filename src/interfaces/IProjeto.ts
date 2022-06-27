@@ -1,4 +1,4 @@
-export default interface IProjetos {
+export default interface IProjeto {
   id: string;
   nome: string;
 }
