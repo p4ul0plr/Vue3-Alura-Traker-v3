@@ -12,5 +12,16 @@
       "id": 3,
       "nome": "teste3 editado"
     }
+  ],
+  "tarefas": [
+    {
+      "id": 1,
+      "duracaoSegundos": 120,
+      "descricao": "Configuração do ambiente",
+      "projeto": {
+        "id": 1,
+        "nome": "Alura Tracker v1"
+      }
+    }
   ]
 }
