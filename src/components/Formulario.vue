@@ -40,19 +40,20 @@
   import { computed } from "@vue/reactivity";
   import { defineComponent } from "vue";
   import { useStore } from "vuex";
-  import { notificacaoMixin } from "@/mixins/notificar";
   import Temporizador from "./Temporizador.vue";
+  import useNotificador from "@/hooks/notificador";
 
   export default defineComponent({
     name: "FormularioComponent",
     emits: ["aoSalvarTarefa"],
     components: { Temporizador },
-    mixins: [notificacaoMixin],
     setup() {
       const store = useStore(key);
+      const { notificar } = useNotificador();
       return {
         projetos: computed(() => store.state.projetos),
         store,
+        notificar,
       };
     },
     data() {
