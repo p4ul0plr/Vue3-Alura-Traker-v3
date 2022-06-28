@@ -1,5 +1,5 @@
 <template>
-  <section class="projetos">
+  <section>
     <form @submit.prevent="salvar">
       <div class="field">
         <label for="nomeDoProjeto" class="label">Nome do Projeto</label>
@@ -64,8 +64,4 @@
   });
 </script>
 
-<style scoped>
-  .projetos {
-    padding: 1.25rem;
-  }
-</style>
+<style></style>
