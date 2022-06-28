@@ -11,7 +11,7 @@
   import { defineComponent } from "vue";
 
   export default defineComponent({
-    name: "BotaoPrincipal",
+    name: "BotaoComponent",
     props: {
       disabled: {
         type: Boolean,

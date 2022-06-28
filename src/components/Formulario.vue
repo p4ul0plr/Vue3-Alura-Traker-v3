@@ -42,7 +42,7 @@
   import Temporizador from "./Temporizador.vue";
 
   export default defineComponent({
-    name: "FormularioPrincipal",
+    name: "FormularioComponent",
     emits: ["aoSalvarTarefa"],
     components: { Temporizador },
     setup() {

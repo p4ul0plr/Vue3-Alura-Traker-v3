@@ -22,7 +22,7 @@
   import Botao from "./Botao.vue";
 
   export default defineComponent({
-    name: "TemporizadorPrincipal",
+    name: "TemporizadorComponent",
     emits: ["aoTemporizadorFinalizado"],
     components: { Cronometro, Botao },
     data() {

@@ -8,7 +8,7 @@
   import { defineComponent } from "vue";
 
   export default defineComponent({
-    name: "BoxPrincipal",
+    name: "BoxComponent",
     data() {
       return {
         estilos: {

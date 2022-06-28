@@ -18,7 +18,7 @@
   import Box from "./Box.vue";
 
   export default defineComponent({
-    name: "TarefaPrincipal",
+    name: "TarefaComponent",
     props: {
       tarefa: {
         type: Object as PropType<ITarefa>,
