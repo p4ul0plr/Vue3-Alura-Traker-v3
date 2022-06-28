@@ -1,14 +1,17 @@
-import IProjeto from "@/interfaces/IProjeto";
+import { INotificacao, TipoNotificacao } from "@/interfaces/INotificacao";
 import { InjectionKey } from "vue";
 import { createStore, Store, useStore as vuexUseStore } from "vuex";
 import {
   ADICIONA_PROJETO,
   ALTERA_PROJETO,
   EXCLUIR_PROJETO,
-} from "./tipo-mutacoes";
+} from "@/store/tipo-mutacoes";
+
+import IProjeto from "@/interfaces/IProjeto";
 
 interface Estado {
   projetos: IProjeto[];
+  notificacoes: INotificacao[];
 }
 
 export const key: InjectionKey<Store<Estado>> = Symbol();
@@ -16,6 +19,26 @@ export const key: InjectionKey<Store<Estado>> = Symbol();
 export const store = createStore<Estado>({
   state: {
     projetos: [],
+    notificacoes: [
+      {
+        id: 1,
+        texto: "uma notificação de sucesso",
+        titulo: "Sucesso",
+        tipo: TipoNotificacao.SUCESSO,
+      },
+      {
+        id: 2,
+        texto: "uma notificação de atenção",
+        titulo: "Atenção",
+        tipo: TipoNotificacao.ATENCAO,
+      },
+      {
+        id: 3,
+        texto: "uma notificação de falha",
+        titulo: "Erro",
+        tipo: TipoNotificacao.FALHA,
+      },
+    ],
   },
   mutations: {
     [ADICIONA_PROJETO](state, nomeDoProjeto: string) {
