@@ -37,16 +37,17 @@
 <script lang="ts">
   import { TipoNotificacao } from "@/interfaces/INotificacao";
   import { key } from "@/store";
-  import { NOTIFICAR } from "@/store/tipo-mutacoes";
   import { computed } from "@vue/reactivity";
   import { defineComponent } from "vue";
   import { useStore } from "vuex";
+  import { notificacaoMixin } from "@/mixins/notificar";
   import Temporizador from "./Temporizador.vue";
 
   export default defineComponent({
     name: "FormularioComponent",
     emits: ["aoSalvarTarefa"],
     components: { Temporizador },
+    mixins: [notificacaoMixin],
     setup() {
       const store = useStore(key);
       return {
@@ -64,11 +65,11 @@
       finalizarTarefa(tempoDecorrido: number): void {
         const projeto = this.projetos.find((p) => p.id == this.idProjeto);
         if (!projeto) {
-          this.store.commit(NOTIFICAR, {
-            titulo: "Ops!",
-            texto: "Selecione um projeto antes de finalizar a tarefa!",
-            tipo: TipoNotificacao.FALHA,
-          });
+          this.notificar(
+            TipoNotificacao.FALHA,
+            "Ops!",
+            "Selecione um projeto antes de finalizar a tarefa!"
+          );
         } else {
           this.$emit("aoSalvarTarefa", {
             duracaoSegundos: tempoDecorrido,
@@ -78,11 +79,11 @@
             ),
           });
           this.descricao = "";
-          this.store.commit(NOTIFICAR, {
-            titulo: "Nova tarefa salvo",
-            texto: "Protinho, sua tarefa foi salva :)",
-            tipo: TipoNotificacao.SUCESSO,
-          });
+          this.notificar(
+            TipoNotificacao.SUCESSO,
+            "Nova tarefa salvo",
+            "Protinho, sua tarefa foi salva :)"
+          );
         }
       },
     },
