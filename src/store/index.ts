@@ -5,6 +5,7 @@ import {
   ADICIONA_PROJETO,
   ALTERA_PROJETO,
   EXCLUIR_PROJETO,
+  NOTIFICAR,
 } from "@/store/tipo-mutacoes";
 
 import IProjeto from "@/interfaces/IProjeto";
@@ -19,26 +20,7 @@ export const key: InjectionKey<Store<Estado>> = Symbol();
 export const store = createStore<Estado>({
   state: {
     projetos: [],
-    notificacoes: [
-      {
-        id: 1,
-        texto: "uma notificação de sucesso",
-        titulo: "Sucesso",
-        tipo: TipoNotificacao.SUCESSO,
-      },
-      {
-        id: 2,
-        texto: "uma notificação de atenção",
-        titulo: "Atenção",
-        tipo: TipoNotificacao.ATENCAO,
-      },
-      {
-        id: 3,
-        texto: "uma notificação de falha",
-        titulo: "Erro",
-        tipo: TipoNotificacao.FALHA,
-      },
-    ],
+    notificacoes: [],
   },
   mutations: {
     [ADICIONA_PROJETO](state, nomeDoProjeto: string) {
@@ -56,6 +38,15 @@ export const store = createStore<Estado>({
     },
     [EXCLUIR_PROJETO](state, id: string) {
       state.projetos = state.projetos.filter((projetos) => projetos.id != id);
+    },
+    [NOTIFICAR](state, novaNotificacao: INotificacao) {
+      novaNotificacao.id = new Date().getTime();
+      state.notificacoes.push(novaNotificacao);
+      setTimeout(() => {
+        state.notificacoes = state.notificacoes.filter(
+          (notificacao) => notificacao.id != novaNotificacao.id
+        );
+      }, 3000);
     },
   },
 });
