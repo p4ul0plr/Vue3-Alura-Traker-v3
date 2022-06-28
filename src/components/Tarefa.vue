@@ -2,7 +2,7 @@
   <box>
     <div class="columns">
       <div class="column is-4">
-        {{ tarefa.descricao.trim() || "Tarefa sem Descrição" }}
+        {{ tarefa.descricao || "Tarefa sem Descrição" }}
       </div>
       <div class="column is-3">
         {{ tarefa.projeto?.nome || "N/D" }}

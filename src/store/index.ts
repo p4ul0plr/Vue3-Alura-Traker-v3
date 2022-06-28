@@ -3,6 +3,7 @@ import { InjectionKey } from "vue";
 import { createStore, Store, useStore as vuexUseStore } from "vuex";
 import {
   ADICIONA_PROJETO,
+  ADICIONA_TAREFA,
   ALTERA_PROJETO,
   DEFINIR_PROJETOS,
   DEFINIR_TAREFAS,
@@ -12,10 +13,11 @@ import {
 import {
   ALTERAR_PROJETO,
   CADASTRAR_PROJETO,
+  CADASTRAR_TAREFA,
   OBTER_PROJETOS,
   OBTER_TAREFAS,
   REMOVER_PROJETO,
-} from "./tipo-acoes";
+} from "@/store/tipo-acoes";
 
 import IProjeto from "@/interfaces/IProjeto";
 import http from "@/http";
@@ -67,6 +69,9 @@ export const store = createStore<Estado>({
     [DEFINIR_TAREFAS](state, tarefas: ITarefa[]) {
       state.tarefas = tarefas;
     },
+    [ADICIONA_TAREFA](state, tarefa: ITarefa) {
+      state.tarefas.push(tarefa);
+    },
   },
   actions: {
     [OBTER_PROJETOS]({ commit }) {
@@ -91,6 +96,11 @@ export const store = createStore<Estado>({
       http
         .get("tarefas")
         .then((resposta) => commit(DEFINIR_TAREFAS, resposta.data));
+    },
+    [CADASTRAR_TAREFA]({ commit }, tarefa: ITarefa) {
+      return http
+        .post("/tarefas", tarefa)
+        .then((resposta) => commit(ADICIONA_TAREFA, resposta.data));
     },
   },
 });
