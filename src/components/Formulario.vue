@@ -35,7 +35,9 @@
 </template>
 
 <script lang="ts">
+  import { TipoNotificacao } from "@/interfaces/INotificacao";
   import { key } from "@/store";
+  import { NOTIFICAR } from "@/store/tipo-mutacoes";
   import { computed } from "@vue/reactivity";
   import { defineComponent } from "vue";
   import { useStore } from "vuex";
@@ -49,6 +51,7 @@
       const store = useStore(key);
       return {
         projetos: computed(() => store.state.projetos),
+        store,
       };
     },
     data() {
@@ -59,14 +62,28 @@
     },
     methods: {
       finalizarTarefa(tempoDecorrido: number): void {
-        this.$emit("aoSalvarTarefa", {
-          duracaoSegundos: tempoDecorrido,
-          descricao: this.descricao,
-          projeto: this.projetos.find(
-            (projeto) => projeto.id == this.idProjeto
-          ),
-        });
-        this.descricao = "";
+        const projeto = this.projetos.find((p) => p.id == this.idProjeto);
+        if (!projeto) {
+          this.store.commit(NOTIFICAR, {
+            titulo: "Ops!",
+            texto: "Selecione um projeto antes de finalizar a tarefa!",
+            tipo: TipoNotificacao.FALHA,
+          });
+        } else {
+          this.$emit("aoSalvarTarefa", {
+            duracaoSegundos: tempoDecorrido,
+            descricao: this.descricao,
+            projeto: this.projetos.find(
+              (projeto) => projeto.id == this.idProjeto
+            ),
+          });
+          this.descricao = "";
+          this.store.commit(NOTIFICAR, {
+            titulo: "Nova tarefa salvo",
+            texto: "Protinho, sua tarefa foi salva :)",
+            tipo: TipoNotificacao.SUCESSO,
+          });
+        }
       },
     },
   });
