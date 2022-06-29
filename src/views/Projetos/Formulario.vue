@@ -44,7 +44,7 @@
     },
     mounted() {
       if (this.id) {
-        const projeto = this.store.state.projetos.find(
+        const projeto = this.store.state.projeto.projetos.find(
           (projeto) => projeto.id == this.id
         );
         this.nomeDoProjeto = projeto?.nome || "";

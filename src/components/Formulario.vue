@@ -51,7 +51,7 @@
       const store = useStore(key);
       const { notificar } = useNotificador();
       return {
-        projetos: computed(() => store.state.projetos),
+        projetos: computed(() => store.state.projeto.projetos),
         store,
         notificar,
       };
@@ -64,7 +64,9 @@
     },
     methods: {
       finalizarTarefa(tempoDecorrido: number): void {
-        const projeto = this.projetos.find((p) => p.id == this.idProjeto);
+        const projeto = this.projetos.find(
+          (projeto) => projeto.id == this.idProjeto
+        );
         if (!projeto) {
           this.notificar(
             TipoNotificacao.FALHA,
