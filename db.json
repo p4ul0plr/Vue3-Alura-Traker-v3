@@ -25,7 +25,7 @@
     },
     {
       "duracaoSegundos": 1,
-      "descricao": "teste",
+      "descricao": "teste editado",
       "projeto": {
         "nome": "teste2",
         "id": 2
