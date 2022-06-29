@@ -43,6 +43,15 @@
         "id": 2
       },
       "id": 2
+    },
+    {
+      "duracaoSegundos": 1,
+      "descricao": "tarefa 34",
+      "projeto": {
+        "nome": "teste3 editado",
+        "id": 6
+      },
+      "id": 3
     }
   ]
 }

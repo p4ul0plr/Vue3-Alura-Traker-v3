@@ -54,15 +54,15 @@
     OBTER_TAREFAS,
   } from "@/store/tipo-acoes";
   import { CADASTRAR_TAREFA } from "@/store/tipo-acoes";
-  import { computed, defineComponent } from "vue";
+  import { NOTIFICAR } from "@/store/tipo-mutacoes";
+  import { TipoNotificacao } from "@/interfaces/INotificacao";
   import { useStore } from "@/store";
+  import { computed, defineComponent } from "vue";
 
   import Formulario from "@/components/Formulario.vue";
   import Tarefa from "@/components/Tarefa.vue";
   import Box from "@/components/Box.vue";
   import ITarefa from "@/interfaces/ITarefa";
-  import { NOTIFICAR } from "@/store/tipo-mutacoes";
-  import { TipoNotificacao } from "@/interfaces/INotificacao";
 
   export default defineComponent({
     name: "TarefasView",
@@ -94,7 +94,7 @@
     },
     computed: {
       listaEstaVazia(): boolean {
-        return this.tarefas.length === 0;
+        return this.tarefas?.length === 0;
       },
     },
     setup() {
@@ -102,7 +102,7 @@
       store.dispatch(OBTER_TAREFAS);
       store.dispatch(OBTER_PROJETOS);
       return {
-        tarefas: computed(() => store.state.tarefas),
+        tarefas: computed(() => store.state.tarefa.tarefas),
         store,
       };
     },

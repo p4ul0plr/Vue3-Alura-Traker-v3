@@ -27,7 +27,7 @@
     setup() {
       const store = useStore();
       return {
-        notificacoes: computed(() => store.state.notificacoes),
+        notificacoes: computed(() => store.state.notificacao.notificacoes),
       };
     },
     data() {
