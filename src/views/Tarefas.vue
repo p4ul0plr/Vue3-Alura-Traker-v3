@@ -23,59 +23,49 @@
       :tarefa="tarefa"
       @aoTarefaClicada="selecionarTarefa"
     />
-    <div
-      v-if="tarefaSelecionada"
-      :class="{ 'is-active': tarefaSelecionada }"
-      class="modal"
-    >
-      <div class="modal-background" @click="fecharModal"></div>
-      <div class="modal-card">
-        <header class="modal-card-head">
-          <p class="modal-card-title">Selecionar uma tarefa</p>
-          <button
-            class="delete"
-            aria-label="close"
-            @click="fecharModal"
-          ></button>
-        </header>
-        <section class="modal-card-body">
-          <div class="field">
-            <label for="descricaoDaTarefa" class="label">Descrição</label>
-            <input
-              type="text"
-              class="input"
-              v-model="tarefaSelecionada.descricao"
-              id="descricaoDaTarefa"
-            />
-          </div>
-        </section>
-        <footer class="modal-card-foot">
-          <button @click="alterarTarefa" class="button is-success">
-            Salvar alterações
-          </button>
-          <button @click="fecharModal" class="button">Calcelar</button>
-        </footer>
-      </div>
-    </div>
+    <modal :mostrar="tarefaSelecionada != null">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Selecionar uma tarefa</p>
+        <button class="delete" aria-label="close" @click="fecharModal"></button>
+      </header>
+      <section class="modal-card-body">
+        <div class="field">
+          <label for="descricaoDaTarefa" class="label">Descrição</label>
+          <input
+            type="text"
+            class="input"
+            v-model="tarefaSelecionada.descricao"
+            id="descricaoDaTarefa"
+          />
+        </div>
+      </section>
+      <footer class="modal-card-foot">
+        <button @click="alterarTarefa" class="button is-success">
+          Salvar alterações
+        </button>
+        <button @click="fecharModal" class="button">Calcelar</button>
+      </footer>
+    </modal>
   </div>
 </template>
 
 <script lang="ts">
+  import { computed, defineComponent, ref, watchEffect } from "vue";
+  import { CADASTRAR_TAREFA } from "@/store/tipo-acoes";
+  import { TipoNotificacao } from "@/interfaces/INotificacao";
+  import { useStore } from "@/store";
   import {
     ALTERAR_TAREFA,
     OBTER_PROJETOS,
     OBTER_TAREFAS,
   } from "@/store/tipo-acoes";
-  import { CADASTRAR_TAREFA } from "@/store/tipo-acoes";
-  import { TipoNotificacao } from "@/interfaces/INotificacao";
-  import { useStore } from "@/store";
-  import { computed, defineComponent, ref, watchEffect } from "vue";
 
-  import Formulario from "@/components/Formulario.vue";
-  import Tarefa from "@/components/Tarefa.vue";
-  import Box from "@/components/Box.vue";
-  import ITarefa from "@/interfaces/ITarefa";
   import useNotificador from "@/hooks/notificador";
+  import Formulario from "@/components/Formulario.vue";
+  import ITarefa from "@/interfaces/ITarefa";
+  import Tarefa from "@/components/Tarefa.vue";
+  import Modal from "@/components/Modal.vue";
+  import Box from "@/components/Box.vue";
 
   export default defineComponent({
     name: "TarefasView",
@@ -83,6 +73,7 @@
       Formulario,
       Tarefa,
       Box,
+      Modal,
     },
     methods: {
       salvarTarefa(tarefa: ITarefa) {

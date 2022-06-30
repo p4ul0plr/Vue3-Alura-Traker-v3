@@ -8,7 +8,7 @@
   "tarefas": [
     {
       "duracaoSegundos": 1,
-      "descricao": "Tarefa",
+      "descricao": "Tarefa 1",
       "projeto": {
         "id": 1,
         "nome": "Projeto Editado"
