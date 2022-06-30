@@ -19,10 +19,6 @@
     {
       "nome": "teste",
       "id": 5
-    },
-    {
-      "nome": "teste3 editado",
-      "id": 6
     }
   ],
   "tarefas": [
@@ -46,7 +42,7 @@
     },
     {
       "duracaoSegundos": 1,
-      "descricao": "tarefa 34",
+      "descricao": "tarefa 3411",
       "projeto": {
         "nome": "teste3 editado",
         "id": 6

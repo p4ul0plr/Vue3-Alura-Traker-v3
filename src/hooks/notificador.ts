@@ -1,9 +1,9 @@
 import { TipoNotificacao } from "@/interfaces/INotificacao";
 import { store } from "@/store";
-import { NOTIFICAR } from "@/store/tipo-mutacoes";
+import { NOTIFICA } from "@/store/tipo-acoes";
 
 type Notificador = {
-  notificar: (tipo: TipoNotificacao, tutulo: string, texto: string) => void;
+  notificar: (tipo: TipoNotificacao, titulo: string, texto: string) => void;
 };
 
 export default (): Notificador => {
@@ -12,11 +12,12 @@ export default (): Notificador => {
     titulo: string,
     texto: string
   ): void => {
-    store.commit(NOTIFICAR, {
+    store.dispatch(NOTIFICA, {
+      tipo,
       titulo,
       texto,
-      tipo,
     });
+    console.log("store.state.notificacao: ", store.state.notificacao);
   };
   return {
     notificar,

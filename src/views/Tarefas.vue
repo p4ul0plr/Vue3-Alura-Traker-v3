@@ -54,7 +54,6 @@
     OBTER_TAREFAS,
   } from "@/store/tipo-acoes";
   import { CADASTRAR_TAREFA } from "@/store/tipo-acoes";
-  import { NOTIFICAR } from "@/store/tipo-mutacoes";
   import { TipoNotificacao } from "@/interfaces/INotificacao";
   import { useStore } from "@/store";
   import { computed, defineComponent } from "vue";
@@ -63,6 +62,7 @@
   import Tarefa from "@/components/Tarefa.vue";
   import Box from "@/components/Box.vue";
   import ITarefa from "@/interfaces/ITarefa";
+  import useNotificador from "@/hooks/notificador";
 
   export default defineComponent({
     name: "TarefasView",
@@ -84,11 +84,11 @@
       alterarTarefa() {
         this.store.dispatch(ALTERAR_TAREFA, this.tarefaSelecionada).then(() => {
           this.fecharModal();
-          this.store.commit(NOTIFICAR, {
-            titulo: "Tarefa editada",
-            texto: "Protinho, sua tarefa foi editada com sucesso :)",
-            tipo: TipoNotificacao.SUCESSO,
-          });
+          this.notificar(
+            TipoNotificacao.SUCESSO,
+            "Tarefa editada",
+            "Protinho, sua tarefa foi editada com sucesso :)"
+          );
         });
       },
     },
@@ -99,11 +99,16 @@
     },
     setup() {
       const store = useStore();
+      const { notificar } = useNotificador();
       store.dispatch(OBTER_TAREFAS);
       store.dispatch(OBTER_PROJETOS);
+      if (!store.state.notificacao.notificacoes) {
+        store.state.notificacao.notificacoes = [];
+      }
       return {
         tarefas: computed(() => store.state.tarefa.tarefas),
         store,
+        notificar,
       };
     },
     data() {

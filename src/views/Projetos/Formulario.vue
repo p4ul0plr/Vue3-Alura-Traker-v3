@@ -18,11 +18,12 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent } from "vue";
+  import { defineComponent, ref } from "vue";
   import { useStore } from "@/store";
-  import { NOTIFICAR } from "@/store/tipo-mutacoes";
   import { TipoNotificacao } from "@/interfaces/INotificacao";
   import { ALTERAR_PROJETO, CADASTRAR_PROJETO } from "@/store/tipo-acoes";
+
+  import useNotificador from "@/hooks/notificador";
 
   export default defineComponent({
     name: "FormularioProjetos",
@@ -30,25 +31,6 @@
       id: {
         type: String,
       },
-    },
-    setup() {
-      const store = useStore();
-      return {
-        store,
-      };
-    },
-    data() {
-      return {
-        nomeDoProjeto: "",
-      };
-    },
-    mounted() {
-      if (this.id) {
-        const projeto = this.store.state.projeto.projetos.find(
-          (projeto) => projeto.id == this.id
-        );
-        this.nomeDoProjeto = projeto?.nome || "";
-      }
     },
     methods: {
       salvar() {
@@ -67,14 +49,45 @@
       },
       lidarComSucesso() {
         this.nomeDoProjeto = "";
-        this.store.commit(NOTIFICAR, {
-          titulo: "Novo projeto salvo",
-          texto: "Protinho, seu projeto foi salvo :)",
-          tipo: TipoNotificacao.SUCESSO,
-        });
+        this.notificar(
+          TipoNotificacao.SUCESSO,
+          "Novo projeto salvo",
+          "Protinho, seu projeto foi salvo :)"
+        );
         this.$router.push("/projetos");
       },
     },
+    setup(props) {
+      const store = useStore();
+      const { notificar } = useNotificador();
+      const nomeDoProjeto = ref("");
+
+      props.id;
+      if (props.id) {
+        const projeto = store.state.projeto.projetos.find(
+          (projeto) => projeto.id == props.id
+        );
+        nomeDoProjeto.value = projeto?.nome || "";
+      }
+      return {
+        store,
+        notificar,
+        nomeDoProjeto,
+      };
+    },
+    // data() {
+    //   return {
+    //     nomeDoProjeto: "",
+    //   };
+    // },
+    // mounted() {
+    //   if (this.id) {
+    //     const projeto = this.store.state.projeto.projetos.find(
+    //       (projeto) => projeto.id == this.id
+    //     );
+    //     this.nomeDoProjeto = projeto?.nome || "";
+    //   }
+    // },
   });
 </script>
 
