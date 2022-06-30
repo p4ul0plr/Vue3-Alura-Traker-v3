@@ -2,52 +2,18 @@
   "projetos": [
     {
       "id": 1,
-      "nome": "Alura Tracker v1"
-    },
-    {
-      "nome": "teste2",
-      "id": 2
-    },
-    {
-      "id": 3,
-      "nome": "teste3 editado"
-    },
-    {
-      "nome": "teste",
-      "id": 4
-    },
-    {
-      "nome": "teste",
-      "id": 5
+      "nome": "Projeto Editado"
     }
   ],
   "tarefas": [
     {
-      "id": 1,
-      "duracaoSegundos": 120,
-      "descricao": "Configuração do ambiente",
+      "duracaoSegundos": 1,
+      "descricao": "Tarefa Editada",
       "projeto": {
         "id": 1,
-        "nome": "Alura Tracker v1"
-      }
-    },
-    {
-      "duracaoSegundos": 1,
-      "descricao": "teste editado",
-      "projeto": {
-        "nome": "teste2",
-        "id": 2
+        "nome": "Projeto Editado"
       },
-      "id": 2
-    },
-    {
-      "duracaoSegundos": 1,
-      "descricao": "tarefa 3411",
-      "projeto": {
-        "nome": "teste3 editado",
-        "id": 6
-      },
-      "id": 3
+      "id": 1
     }
   ]
 }

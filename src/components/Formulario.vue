@@ -28,7 +28,7 @@
         </div>
       </div>
       <div class="column">
-        <temporizador @aoTemporizadorFinalizado="finalizarTarefa" />
+        <temporizador @aoTemporizadorFinalizado="salvarTarefa" />
       </div>
     </div>
   </div>
@@ -38,7 +38,7 @@
   import { TipoNotificacao } from "@/interfaces/INotificacao";
   import { key } from "@/store";
   import { computed } from "@vue/reactivity";
-  import { defineComponent } from "vue";
+  import { defineComponent, ref } from "vue";
   import { useStore } from "vuex";
   import Temporizador from "./Temporizador.vue";
   import useNotificador from "@/hooks/notificador";
@@ -47,49 +47,50 @@
     name: "FormularioComponent",
     emits: ["aoSalvarTarefa"],
     components: { Temporizador },
-    setup() {
-      const store = useStore(key);
+    setup(props, { emit }) {
       const { notificar } = useNotificador();
-      return {
-        projetos: computed(() => store.state.projeto.projetos),
-        store,
-        notificar,
-      };
-    },
-    data() {
-      return {
-        descricao: "",
-        idProjeto: "",
-      };
-    },
-    methods: {
-      finalizarTarefa(tempoDecorrido: number): void {
-        const projeto = this.projetos.find(
-          (projeto) => projeto.id == this.idProjeto
+      const store = useStore(key);
+      const projetos = computed(() => store.state.projeto.projetos);
+      const descricao = ref("");
+      const idProjeto = ref("");
+
+      const salvarTarefa = (tempoEmSegundos: number): void => {
+        const projeto = projetos.value.find(
+          (projeto) => projeto.id == idProjeto.value
         );
         if (!projeto) {
-          this.notificar(
+          notificar(
             TipoNotificacao.FALHA,
             "Ops!",
             "Selecione um projeto antes de finalizar a tarefa!"
           );
         } else {
-          this.$emit("aoSalvarTarefa", {
-            duracaoSegundos: tempoDecorrido,
-            descricao: this.descricao,
-            projeto: this.projetos.find(
-              (projeto) => projeto.id == this.idProjeto
+          emit("aoSalvarTarefa", {
+            duracaoSegundos: tempoEmSegundos,
+            descricao: descricao.value,
+            projeto: projetos.value.find(
+              (projeto) => projeto.id == idProjeto.value
             ),
           });
-          this.descricao = "";
-          this.notificar(
+          descricao.value = "";
+          notificar(
             TipoNotificacao.SUCESSO,
             "Nova tarefa salvo",
             "Protinho, sua tarefa foi salva :)"
           );
         }
-      },
+      };
+
+      return {
+        notificar,
+        salvarTarefa,
+        projetos,
+        store,
+        descricao,
+        idProjeto,
+      };
     },
+    methods: {},
   });
 </script>
 

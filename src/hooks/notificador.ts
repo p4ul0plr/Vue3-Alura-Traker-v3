@@ -17,7 +17,6 @@ export default (): Notificador => {
       titulo,
       texto,
     });
-    console.log("store.state.notificacao: ", store.state.notificacao);
   };
   return {
     notificar,

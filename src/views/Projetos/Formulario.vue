@@ -21,6 +21,7 @@
   import { defineComponent, ref } from "vue";
   import { useStore } from "@/store";
   import { TipoNotificacao } from "@/interfaces/INotificacao";
+  import { useRouter } from "vue-router";
   import { ALTERAR_PROJETO, CADASTRAR_PROJETO } from "@/store/tipo-acoes";
 
   import useNotificador from "@/hooks/notificador";
@@ -32,32 +33,9 @@
         type: String,
       },
     },
-    methods: {
-      salvar() {
-        if (this.id) {
-          this.store
-            .dispatch(ALTERAR_PROJETO, {
-              id: this.id,
-              nome: this.nomeDoProjeto,
-            })
-            .then(() => this.lidarComSucesso());
-        } else {
-          this.store
-            .dispatch(CADASTRAR_PROJETO, this.nomeDoProjeto)
-            .then(() => this.lidarComSucesso());
-        }
-      },
-      lidarComSucesso() {
-        this.nomeDoProjeto = "";
-        this.notificar(
-          TipoNotificacao.SUCESSO,
-          "Novo projeto salvo",
-          "Protinho, seu projeto foi salvo :)"
-        );
-        this.$router.push("/projetos");
-      },
-    },
+    methods: {},
     setup(props) {
+      const router = useRouter();
       const store = useStore();
       const { notificar } = useNotificador();
       const nomeDoProjeto = ref("");
@@ -69,25 +47,38 @@
         );
         nomeDoProjeto.value = projeto?.nome || "";
       }
+
+      const salvar = () => {
+        if (props.id) {
+          store
+            .dispatch(ALTERAR_PROJETO, {
+              id: props.id,
+              nome: nomeDoProjeto.value,
+            })
+            .then(() => lidarComSucesso());
+        } else {
+          store
+            .dispatch(CADASTRAR_PROJETO, nomeDoProjeto.value)
+            .then(() => lidarComSucesso());
+        }
+      };
+
+      const lidarComSucesso = () => {
+        nomeDoProjeto.value = "";
+        notificar(
+          TipoNotificacao.SUCESSO,
+          "Novo projeto salvo",
+          "Protinho, seu projeto foi salvo :)"
+        );
+        router.push("/projetos");
+      };
+
       return {
-        store,
-        notificar,
         nomeDoProjeto,
+        salvar,
+        lidarComSucesso,
       };
     },
-    // data() {
-    //   return {
-    //     nomeDoProjeto: "",
-    //   };
-    // },
-    // mounted() {
-    //   if (this.id) {
-    //     const projeto = this.store.state.projeto.projetos.find(
-    //       (projeto) => projeto.id == this.id
-    //     );
-    //     this.nomeDoProjeto = projeto?.nome || "";
-    //   }
-    // },
   });
 </script>
 

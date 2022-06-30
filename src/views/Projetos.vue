@@ -7,9 +7,17 @@
 
 <script lang="ts">
   import { defineComponent } from "vue";
+  import { useStore } from "@/store";
 
   export default defineComponent({
     name: "ProjetosView",
+    setup() {
+      const store = useStore();
+
+      if (!store.state.notificacao.notificacoes) {
+        store.state.notificacao.notificacoes = [];
+      }
+    },
   });
 </script>
 
