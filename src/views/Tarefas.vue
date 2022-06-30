@@ -69,7 +69,7 @@
   import { CADASTRAR_TAREFA } from "@/store/tipo-acoes";
   import { TipoNotificacao } from "@/interfaces/INotificacao";
   import { useStore } from "@/store";
-  import { computed, defineComponent, ref } from "vue";
+  import { computed, defineComponent, ref, watchEffect } from "vue";
 
   import Formulario from "@/components/Formulario.vue";
   import Tarefa from "@/components/Tarefa.vue";
@@ -109,19 +109,26 @@
       const { notificar } = useNotificador();
       const store = useStore();
       const filtro = ref("");
-      const tarefas = computed(() =>
+      const tarefas = computed(() => store.state.tarefa.tarefas);
+      /* const tarefas = computed(() =>
         store.state.tarefa.tarefas?.filter(
           (tarefa) => !filtro.value || tarefa.descricao.includes(filtro.value)
         )
-      );
+      ); */
+      const listaEstaVazia = (): boolean => {
+        return tarefas.value?.length === 0;
+      };
+
+      watchEffect(() => {
+        console.log(filtro.value);
+        store.dispatch(OBTER_TAREFAS, filtro.value);
+      });
+
       store.dispatch(OBTER_TAREFAS);
       store.dispatch(OBTER_PROJETOS);
       if (!store.state.notificacao.notificacoes) {
         store.state.notificacao.notificacoes = [];
       }
-      const listaEstaVazia = (): boolean => {
-        return tarefas.value?.length === 0;
-      };
       return {
         listaEstaVazia,
         notificar,
