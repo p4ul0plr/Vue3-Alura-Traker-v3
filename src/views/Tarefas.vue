@@ -1,9 +1,22 @@
 <template>
   <formulario @aoSalvarTarefa="salvarTarefa" />
   <div class="lista">
-    <box v-if="listaEstaVazia">
+    <box v-if="listaEstaVazia()">
       <p>Você não está muito produtivo hoje :(</p>
     </box>
+    <div class="field">
+      <p class="control has-icons-left">
+        <input
+          v-model="filtro"
+          class="input"
+          type="text"
+          placeholder="Digite para filtrar"
+        />
+        <span class="icon is-small is-left">
+          <i class="fas fa-search"></i>
+        </span>
+      </p>
+    </div>
     <tarefa
       v-for="(tarefa, index) in tarefas"
       :key="index"
@@ -56,7 +69,7 @@
   import { CADASTRAR_TAREFA } from "@/store/tipo-acoes";
   import { TipoNotificacao } from "@/interfaces/INotificacao";
   import { useStore } from "@/store";
-  import { computed, defineComponent } from "vue";
+  import { computed, defineComponent, ref } from "vue";
 
   import Formulario from "@/components/Formulario.vue";
   import Tarefa from "@/components/Tarefa.vue";
@@ -92,23 +105,29 @@
         });
       },
     },
-    computed: {
-      listaEstaVazia(): boolean {
-        return this.tarefas?.length === 0;
-      },
-    },
     setup() {
-      const store = useStore();
       const { notificar } = useNotificador();
+      const store = useStore();
+      const filtro = ref("");
+      const tarefas = computed(() =>
+        store.state.tarefa.tarefas?.filter(
+          (tarefa) => !filtro.value || tarefa.descricao.includes(filtro.value)
+        )
+      );
       store.dispatch(OBTER_TAREFAS);
       store.dispatch(OBTER_PROJETOS);
       if (!store.state.notificacao.notificacoes) {
         store.state.notificacao.notificacoes = [];
       }
+      const listaEstaVazia = (): boolean => {
+        return tarefas.value?.length === 0;
+      };
       return {
-        tarefas: computed(() => store.state.tarefa.tarefas),
-        store,
+        listaEstaVazia,
         notificar,
+        tarefas,
+        filtro,
+        store,
       };
     },
     data() {
